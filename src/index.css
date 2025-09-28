@@ -2,41 +2,80 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Traffic Management System Design System - Control Center Theme */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Control Center Base Colors */
+    --background: 217 33% 6%;
+    --foreground: 213 31% 91%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 217 33% 8%;
+    --card-foreground: 213 31% 91%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 217 33% 8%;
+    --popover-foreground: 213 31% 91%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Traffic System Primary (Deep Blue) */
+    --primary: 217 91% 20%;
+    --primary-foreground: 213 31% 91%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Control Panel Secondary */
+    --secondary: 217 19% 15%;
+    --secondary-foreground: 213 31% 91%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted Dashboard Elements */
+    --muted: 217 19% 12%;
+    --muted-foreground: 217 10% 65%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* System Accent */
+    --accent: 217 19% 15%;
+    --accent-foreground: 213 31% 91%;
 
-    --destructive: 0 84.2% 60.2%;
+    /* Emergency/Alert Colors */
+    --destructive: 0 91% 71%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Interface Elements */
+    --border: 217 19% 18%;
+    --input: 217 19% 15%;
+    --ring: 217 91% 59%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Traffic Light Colors */
+    --traffic-green: 142 76% 36%;
+    --traffic-green-glow: 142 76% 36%;
+    --traffic-yellow: 48 96% 53%;
+    --traffic-yellow-glow: 48 96% 53%;
+    --traffic-red: 0 91% 71%;
+    --traffic-red-glow: 0 91% 71%;
+
+    /* Performance Metrics */
+    --success: 142 76% 36%;
+    --success-foreground: 213 31% 91%;
+    --warning: 48 96% 53%;
+    --warning-foreground: 217 33% 6%;
+    --danger: 0 91% 71%;
+    --danger-foreground: 213 31% 91%;
+
+    /* Dashboard Gradients */
+    --gradient-control: linear-gradient(135deg, hsl(217 33% 8%), hsl(217 19% 15%));
+    --gradient-traffic: linear-gradient(135deg, hsl(217 91% 20%), hsl(217 91% 30%));
+    --gradient-success: linear-gradient(135deg, hsl(142 76% 36%), hsl(142 76% 46%));
+
+    /* Glow Effects */
+    --glow-traffic-green: 0 0 20px hsl(142 76% 36% / 0.5);
+    --glow-traffic-yellow: 0 0 20px hsl(48 96% 53% / 0.5);
+    --glow-traffic-red: 0 0 20px hsl(0 91% 71% / 0.5);
+    --glow-primary: 0 0 30px hsl(217 91% 59% / 0.3);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-glow: box-shadow 0.3s ease-in-out;
+
+    /* Grid System */
+    --grid-gap: 1.5rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -101,5 +140,92 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    background-image: 
+      radial-gradient(circle at 25% 25%, hsl(217 91% 20% / 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, hsl(217 91% 30% / 0.1) 0%, transparent 50%);
+  }
+}
+
+@layer components {
+  /* Traffic Light Components */
+  .traffic-light {
+    @apply relative rounded-full transition-all duration-300;
+  }
+  
+  .traffic-light-green {
+    @apply bg-green-500 shadow-lg;
+    box-shadow: var(--glow-traffic-green);
+  }
+  
+  .traffic-light-yellow {
+    @apply bg-yellow-500 shadow-lg;
+    box-shadow: var(--glow-traffic-yellow);
+  }
+  
+  .traffic-light-red {
+    @apply bg-red-500 shadow-lg;
+    box-shadow: var(--glow-traffic-red);
+  }
+  
+  .traffic-light-off {
+    @apply bg-muted border border-border;
+  }
+
+  /* Dashboard Components */
+  .dashboard-card {
+    @apply bg-card border border-border rounded-lg p-6 shadow-lg;
+    background: var(--gradient-control);
+    transition: var(--transition-smooth);
+  }
+  
+  .dashboard-card:hover {
+    box-shadow: var(--glow-primary);
+  }
+
+  /* Control Panel */
+  .control-panel {
+    @apply bg-secondary/50 backdrop-blur border border-border rounded-lg p-4;
+  }
+
+  /* Metric Cards */
+  .metric-success {
+    @apply bg-success/10 border-success/20 text-success;
+  }
+  
+  .metric-warning {
+    @apply bg-warning/10 border-warning/20 text-warning;
+  }
+  
+  .metric-danger {
+    @apply bg-danger/10 border-danger/20 text-danger;
+  }
+
+  /* Animations */
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite alternate;
+  }
+  
+  @keyframes pulse-glow {
+    from {
+      box-shadow: 0 0 10px currentColor;
+    }
+    to {
+      box-shadow: 0 0 20px currentColor, 0 0 30px currentColor;
+    }
+  }
+  
+  .fade-in-up {
+    animation: fade-in-up 0.6s ease-out;
+  }
+  
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
