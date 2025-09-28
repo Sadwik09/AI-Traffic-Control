@@ -153,22 +153,22 @@
   }
   
   .traffic-light-green {
-    @apply bg-green-500 shadow-lg;
-    box-shadow: var(--glow-traffic-green);
+    @apply bg-success border-2 border-success/40;
+    box-shadow: 0 0 20px hsl(var(--success) / 0.6), 0 0 40px hsl(var(--success) / 0.3);
   }
   
   .traffic-light-yellow {
-    @apply bg-yellow-500 shadow-lg;
-    box-shadow: var(--glow-traffic-yellow);
+    @apply bg-warning border-2 border-warning/40;
+    box-shadow: 0 0 20px hsl(var(--warning) / 0.6), 0 0 40px hsl(var(--warning) / 0.3);
   }
   
   .traffic-light-red {
-    @apply bg-red-500 shadow-lg;
-    box-shadow: var(--glow-traffic-red);
+    @apply bg-danger border-2 border-danger/40;
+    box-shadow: 0 0 20px hsl(var(--danger) / 0.6), 0 0 40px hsl(var(--danger) / 0.3);
   }
   
   .traffic-light-off {
-    @apply bg-muted border border-border;
+    @apply bg-muted/20 border-2 border-border;
   }
 
   /* Dashboard Components */
