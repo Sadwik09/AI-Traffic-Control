@@ -41,7 +41,7 @@ interface IntersectionData {
 }
 
 export const useAdvancedTrafficSimulation = () => {
-  const [isRunning, setIsRunning] = useState(false);
+  const [isRunning, setIsRunning] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
   const [northSouthState, setNorthSouthState] = useState<TrafficLightState>("red");
   const [eastWestState, setEastWestState] = useState<TrafficLightState>("green");
@@ -77,12 +77,12 @@ export const useAdvancedTrafficSimulation = () => {
   ]);
   const [greenWaveActive, setGreenWaveActive] = useState(true);
   
-  // Vehicle counts (simulated)
+  // Vehicle counts (simulated) - Start with initial traffic
   const [vehicleCount, setVehicleCount] = useState<VehicleCount>({
-    north: 0,
-    south: 0,
-    east: 0,
-    west: 0
+    north: 8,
+    south: 6,
+    east: 10,
+    west: 7
   });
   
   // Historical data
