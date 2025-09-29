@@ -73,41 +73,41 @@ const Index = () => {
   const systemStatus = getSystemStatus();
 
   return (
-    <div className="min-h-screen">
-      {/* Vibrant Header with Rainbow Gradient */}
-      <div className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b-2 border-primary/20 shadow-xl">
+    <div className="min-h-screen bg-background">
+      {/* Enhanced Header with Gradient */}
+      <div className="sticky top-0 z-50 backdrop-blur-lg bg-card/95 border-b border-border shadow-lg">
         <div className="max-w-[1600px] mx-auto p-6 md:p-8">
           <div className="text-center space-y-3">
-            <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-fade-in">
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-fade-in">
               Advanced Traffic Management System
             </h1>
-            <p className="text-foreground text-lg font-medium">
-              🚦 AI-Powered Smart City Traffic Control • 🚨 Emergency Priority • 🌦️ Weather Adaptation • 🔄 Multi-Intersection Coordination
+            <p className="text-muted-foreground text-lg">
+              AI-Powered Smart City Traffic Control • Emergency Priority • Weather Adaptation • Multi-Intersection Coordination
             </p>
             
-            {/* Colorful Status Indicators */}
+            {/* Status Indicators */}
             <div className="flex items-center justify-center flex-wrap gap-4 mt-4">
-              <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary/20 to-primary/10 border-2 border-primary/30 shadow-lg">
-                <div className={`w-4 h-4 rounded-full ${isRunning ? 'bg-success pulse-glow' : 'bg-muted-foreground'}`} />
-                <span className="text-sm font-bold text-primary">
-                  {isRunning ? '● ACTIVE' : '○ PAUSED'}
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/30 border border-border">
+                <div className={`w-3 h-3 rounded-full ${isRunning ? 'bg-success pulse-glow' : 'bg-muted'}`} />
+                <span className="text-sm font-semibold">
+                  {isRunning ? 'ACTIVE' : 'PAUSED'}
                 </span>
               </div>
               
-              <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-secondary/20 to-secondary/10 border-2 border-secondary/30 shadow-lg">
-                <Shield className="w-5 h-5 text-secondary" />
-                <span className="text-sm font-bold text-secondary">{systemStatus.status}</span>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30">
+                <Shield className="w-4 h-4 text-primary" />
+                <span className="text-sm font-semibold text-primary">{systemStatus.status}</span>
               </div>
               
-              <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-accent/20 to-accent/10 border-2 border-accent/30 shadow-lg">
-                <Clock className="w-5 h-5 text-accent" />
-                <span className="text-sm font-mono font-bold text-accent">{formatTime(currentTime)}</span>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/30 border border-border">
+                <Clock className="w-4 h-4" />
+                <span className="text-sm font-mono font-semibold">{formatTime(currentTime)}</span>
               </div>
               
               {greenWaveActive && (
-                <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-success/20 to-success/10 border-2 border-success/30 shadow-lg">
-                  <Zap className="w-5 h-5 text-success pulse-glow" />
-                  <span className="text-sm font-bold text-success">🌊 Green Wave Active</span>
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-success/10 border border-success/30">
+                  <Zap className="w-4 h-4 text-success" />
+                  <span className="text-sm font-semibold text-success">Green Wave Active</span>
                 </div>
               )}
             </div>
@@ -117,59 +117,52 @@ const Index = () => {
       
       <div className="max-w-[1600px] mx-auto p-6 space-y-8">
 
-        {/* Colorful Key Performance Indicators */}
-        <div className="dashboard-card bg-gradient-to-br from-blue-50 to-purple-50 border-2 border-primary/30">
+        {/* Key Performance Indicators */}
+        <div>
           <div className="flex items-center gap-3 mb-6">
-            <div className="p-3 rounded-xl bg-gradient-to-br from-primary to-secondary shadow-lg">
-              <Activity className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h2 className="text-2xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Key Performance Indicators
-              </h2>
-              <p className="text-xs text-muted-foreground">Real-time system metrics and analytics</p>
-            </div>
+            <Activity className="w-6 h-6 text-primary" />
+            <h2 className="text-2xl font-bold">Key Performance Indicators</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             <MetricCard
-              title="⏱️ Runtime"
+              title="Runtime"
               value={formatTime(currentTime)}
-              icon={<Clock className="w-6 h-6 text-primary" />}
+              icon={<Clock className="w-6 h-6" />}
               variant="default"
             />
             
             <MetricCard
-              title="🚗 Traffic Flow"
+              title="Traffic Flow Rate"
               value={metrics.vehiclesPerMinute.toFixed(1)}
               trend="up"
               change="vehicles/min"
-              icon={<Car className="w-6 h-6 text-success" />}
+              icon={<Car className="w-6 h-6" />}
               variant="success"
             />
             
             <MetricCard
-              title="⏳ Wait Time"
+              title="Average Wait Time"
               value={`${metrics.avgWaitTime.toFixed(1)}s`}
               trend="down"
-              change={metrics.avgWaitTime > 15 ? "↑ High" : "✓ Optimal"}
-              icon={<Timer className="w-6 h-6 text-warning" />}
+              change={metrics.avgWaitTime > 15 ? "↑ High" : "↓ Optimal"}
+              icon={<Timer className="w-6 h-6" />}
               variant={metrics.avgWaitTime > 15 ? "warning" : "success"}
             />
             
             <MetricCard
-              title="📊 Congestion"
+              title="Congestion Level"
               value={`${metrics.congestionIndex.toFixed(0)}%`}
               trend={metrics.congestionIndex > 50 ? "up" : "neutral"}
-              change={metrics.congestionIndex > 70 ? "⚠ Critical" : metrics.congestionIndex > 50 ? "→ Moderate" : "✓ Clear"}
-              icon={<BarChart3 className="w-6 h-6 text-accent" />}
+              change={metrics.congestionIndex > 70 ? "↑ Critical" : metrics.congestionIndex > 50 ? "→ Moderate" : "↓ Clear"}
+              icon={<BarChart3 className="w-6 h-6" />}
               variant={getCongestionVariant(metrics.congestionIndex)}
             />
 
             <MetricCard
-              title="🌦️ Weather Impact"
+              title="Weather Impact"
               value={`${(weatherImpact * 100).toFixed(0)}%`}
-              change={weatherImpact >= 0.9 ? "Perfect" : weatherImpact >= 0.7 ? "Moderate" : "Severe"}
-              icon={<Activity className="w-6 h-6 text-secondary" />}
+              change={weatherImpact >= 0.9 ? "Optimal" : weatherImpact >= 0.7 ? "Moderate" : "Severe"}
+              icon={<Activity className="w-6 h-6" />}
               variant={weatherImpact >= 0.9 ? "success" : weatherImpact >= 0.7 ? "warning" : "danger"}
             />
           </div>
@@ -181,10 +174,8 @@ const Index = () => {
           <div className="xl:col-span-2 space-y-6">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-3 h-3 rounded-full bg-primary animate-pulse shadow-lg" />
-                <h2 className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  🚦 Live Intersection Monitor
-                </h2>
+                <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                <h2 className="text-xl font-bold">Live Intersection Monitor</h2>
               </div>
               <IntersectionView
                 northSouth={northSouthState}
@@ -195,10 +186,8 @@ const Index = () => {
             
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-3 h-3 rounded-full bg-success animate-pulse shadow-lg" />
-                <h2 className="text-xl font-bold bg-gradient-to-r from-success to-primary bg-clip-text text-transparent">
-                  🌐 Network Coordination
-                </h2>
+                <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
+                <h2 className="text-xl font-bold">Network Coordination</h2>
               </div>
               <MultiIntersectionView
                 intersections={intersections}
@@ -211,10 +200,8 @@ const Index = () => {
           <div className="space-y-6">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-3 h-3 rounded-full bg-accent animate-pulse shadow-lg" />
-                <h2 className="text-xl font-bold bg-gradient-to-r from-accent to-warning bg-clip-text text-transparent">
-                  📈 Traffic Analytics
-                </h2>
+                <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                <h2 className="text-xl font-bold">Traffic Analytics</h2>
               </div>
               <AnalyticsCharts
                 trafficData={trafficDataPoints}
@@ -227,10 +214,8 @@ const Index = () => {
           <div className="space-y-6">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-3 h-3 rounded-full bg-warning animate-pulse shadow-lg" />
-                <h2 className="text-xl font-bold bg-gradient-to-r from-warning to-danger bg-clip-text text-transparent">
-                  🎮 Control Center
-                </h2>
+                <div className="w-2 h-2 rounded-full bg-warning animate-pulse" />
+                <h2 className="text-xl font-bold">Control Center</h2>
               </div>
               
               <div className="space-y-4">
@@ -297,17 +282,14 @@ const Index = () => {
           />
         </div>
 
-        {/* Vibrant Footer */}
-        <div className="dashboard-card text-center bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5 border-2 border-primary/20">
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <div className="w-3 h-3 rounded-full bg-gradient-to-r from-primary via-secondary to-accent animate-pulse shadow-lg" />
-            <p className="text-xl font-extrabold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Advanced Traffic Management System
-            </p>
-            <div className="w-3 h-3 rounded-full bg-gradient-to-r from-accent via-secondary to-primary animate-pulse shadow-lg" />
+        {/* Enhanced Footer */}
+        <div className="dashboard-card text-center">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
+            <p className="text-lg font-bold">Advanced Traffic Management System</p>
           </div>
-          <p className="text-sm text-muted-foreground font-medium">
-            🎓 AI-Powered Smart City Solution • 🏆 Capstone Project 2025 • 🚀 Built with React & TypeScript
+          <p className="text-sm text-muted-foreground">
+            AI-Powered Smart City Solution • Capstone Project 2025
           </p>
         </div>
       </div>
