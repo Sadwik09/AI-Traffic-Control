@@ -2,7 +2,6 @@ import { MetricCard } from "@/components/MetricCard";
 import { IntersectionView } from "@/components/IntersectionView";
 import { ControlPanel } from "@/components/ControlPanel";
 import { EmergencyControl } from "@/components/EmergencyControl";
-import { PedestrianControl } from "@/components/PedestrianControl";
 import { WeatherControl } from "@/components/WeatherControl";
 import { AnalyticsCharts } from "@/components/AnalyticsCharts";
 import { MultiIntersectionView } from "@/components/MultiIntersectionView";
@@ -237,13 +236,6 @@ const Index = () => {
                   emergencyTimeRemaining={emergencyTimeRemaining}
                 />
 
-                <PedestrianControl
-                  pedestrianRequests={pedestrianRequests}
-                  onPedestrianRequest={handlePedestrianRequest}
-                  pedestrianPhaseActive={pedestrianPhaseActive}
-                  pedestrianTimeRemaining={pedestrianTimeRemaining}
-                />
-
                 <WeatherControl
                   currentWeather={currentWeather}
                   onWeatherChange={handleWeatherChange}
@@ -269,10 +261,10 @@ const Index = () => {
             variant={activeEmergency ? "danger" : "success"}
           />
           <MetricCard
-            title="Pedestrian Requests" 
-            value={Object.values(pedestrianRequests).filter(Boolean).length}
-            icon={<Clock className="w-5 h-5" />}
-            variant="default"
+            title="System Efficiency" 
+            value={`${(100 - metrics.congestionIndex).toFixed(0)}%`}
+            icon={<TrendingUp className="w-5 h-5" />}
+            variant={metrics.congestionIndex < 30 ? "success" : "warning"}
           />
           <MetricCard
             title="Network Sync"
