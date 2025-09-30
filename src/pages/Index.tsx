@@ -28,6 +28,7 @@ const Index = () => {
     trafficDataPoints,
     directionData,
     activeEmergency,
+    emergencyDirection,
     emergencyTimeRemaining,
     handleEmergencyTrigger,
     pedestrianRequests,
@@ -232,6 +233,7 @@ const Index = () => {
 
                 <EmergencyControl
                   activeEmergency={activeEmergency}
+                  emergencyDirection={emergencyDirection}
                   onEmergencyTrigger={handleEmergencyTrigger}
                   emergencyTimeRemaining={emergencyTimeRemaining}
                 />

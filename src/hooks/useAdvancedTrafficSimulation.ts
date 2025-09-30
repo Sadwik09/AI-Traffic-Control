@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { TrafficLightState } from "@/components/TrafficLight";
-import { EmergencyVehicleType } from "@/components/EmergencyControl";
+import { EmergencyVehicleType, EmergencyDirection } from "@/components/EmergencyControl";
 import { WeatherCondition } from "@/components/WeatherControl";
 
 interface VehicleCount {
@@ -53,6 +53,7 @@ export const useAdvancedTrafficSimulation = () => {
   
   // Emergency System
   const [activeEmergency, setActiveEmergency] = useState<EmergencyVehicleType>(null);
+  const [emergencyDirection, setEmergencyDirection] = useState<EmergencyDirection>(null);
   const [emergencyTimeRemaining, setEmergencyTimeRemaining] = useState(0);
   
   // Pedestrian System
@@ -105,15 +106,24 @@ export const useAdvancedTrafficSimulation = () => {
   };
 
   // Emergency vehicle handler
-  const handleEmergencyTrigger = useCallback((type: EmergencyVehicleType) => {
-    setActiveEmergency(type);
-    if (type) {
+  const handleEmergencyTrigger = useCallback((type: EmergencyVehicleType, direction?: EmergencyDirection) => {
+    if (type === null) {
+      // Cancel emergency
+      setActiveEmergency(null);
+      setEmergencyDirection(null);
+      setEmergencyTimeRemaining(0);
+    } else if (direction) {
+      // Set emergency with direction
+      setActiveEmergency(type);
+      setEmergencyDirection(direction);
       setEmergencyTimeRemaining(30); // 30 second emergency override
       // Cancel pedestrian phase if active
       setPedestrianPhaseActive(false);
       setPedestrianTimeRemaining(0);
     } else {
-      setEmergencyTimeRemaining(0);
+      // Just set the emergency type, waiting for direction
+      setActiveEmergency(type);
+      setEmergencyDirection(null);
     }
   }, []);
 
@@ -158,13 +168,14 @@ export const useAdvancedTrafficSimulation = () => {
     setVehicleCount(prev => {
       let throughput = { north: 0, south: 0, east: 0, west: 0 };
 
-      if (activeEmergency) {
-        // Emergency vehicles get priority - clear all lanes
+      if (activeEmergency && emergencyDirection) {
+        // Emergency vehicles get priority - only emergency direction moves
+        const baseRate = 5;
         throughput = {
-          north: Math.min(prev.north, 5),
-          south: Math.min(prev.south, 5), 
-          east: Math.min(prev.east, 5),
-          west: Math.min(prev.west, 5),
+          north: emergencyDirection === "north" ? Math.min(prev.north, baseRate) : 0,
+          south: emergencyDirection === "south" ? Math.min(prev.south, baseRate) : 0,
+          east: emergencyDirection === "east" ? Math.min(prev.east, baseRate) : 0,
+          west: emergencyDirection === "west" ? Math.min(prev.west, baseRate) : 0,
         };
       } else if (pedestrianPhaseActive) {
         // No vehicle movement during pedestrian phase
@@ -195,7 +206,7 @@ export const useAdvancedTrafficSimulation = () => {
         west: prev.west - throughput.west,
       };
     });
-  }, [northSouthState, eastWestState, activeEmergency, pedestrianPhaseActive, weatherImpact]);
+  }, [northSouthState, eastWestState, activeEmergency, emergencyDirection, pedestrianPhaseActive, weatherImpact]);
 
   // Adaptive timing calculation
   const calculateAdaptiveTiming = useCallback(() => {
@@ -229,6 +240,7 @@ export const useAdvancedTrafficSimulation = () => {
         setEmergencyTimeRemaining(prev => prev - 1);
         if (emergencyTimeRemaining === 1) {
           setActiveEmergency(null);
+          setEmergencyDirection(null);
         }
       }
       
@@ -266,10 +278,15 @@ export const useAdvancedTrafficSimulation = () => {
       }
       
       // Traffic light control logic
-      if (activeEmergency) {
-        // Emergency override - all lights red except emergency route
-        setNorthSouthState("red");
-        setEastWestState("red");
+      if (activeEmergency && emergencyDirection) {
+        // Emergency override - selected direction green, all others red
+        if (emergencyDirection === "north" || emergencyDirection === "south") {
+          setNorthSouthState("green");
+          setEastWestState("red");
+        } else {
+          setNorthSouthState("red");
+          setEastWestState("green");
+        }
       } else if (pedestrianPhaseActive) {
         // Pedestrian phase - all lights red
         setNorthSouthState("red");
@@ -375,6 +392,7 @@ export const useAdvancedTrafficSimulation = () => {
     setNorthSouthState("red");
     setEastWestState("green");
     setActiveEmergency(null);
+    setEmergencyDirection(null);
     setEmergencyTimeRemaining(0);
     setPedestrianPhaseActive(false);
     setPedestrianTimeRemaining(0);
@@ -402,6 +420,7 @@ export const useAdvancedTrafficSimulation = () => {
     
     // Emergency System
     activeEmergency,
+    emergencyDirection,
     emergencyTimeRemaining,
     handleEmergencyTrigger,
     
